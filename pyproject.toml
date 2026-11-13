@@ -1,0 +1,30 @@
+[project]
+name = "cafe-iot"
+version = "0.1.0"
+description = "Software para el monitoreo del proceso de elaboración del café mediante sensores IoT y visión artificial (UCEVA)"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7,<3",
+    "PyYAML>=6.0,<7",
+    "paho-mqtt>=2.1,<3",
+    "psycopg[binary]>=3.2,<4",
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.30,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "httpx>=0.27,<1"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cafe_iot = ["panel/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

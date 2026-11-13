@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uceva.edu.co/cafe-iot/contrato/lectura.schema.json",
+  "title": "Lectura de sensor",
+  "description": "Mensaje que publica cada sensor en MQTT. Propuesta para acordar con Ingeniería Electrónica (versión 0.1).",
+  "type": "object",
+  "required": ["version", "sensor_id", "etapa", "variable", "valor", "unidad", "timestamp"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "description": "Versión del contrato de datos.",
+      "const": "0.1"
+    },
+    "sensor_id": {
+      "description": "Identificador único del sensor físico.",
+      "type": "string",
+      "pattern": "^[a-z0-9-]{3,40}$",
+      "examples": ["sec-temp-01"]
+    },
+    "etapa": {
+      "description": "Código de la etapa del proceso (ver config/etapas.yaml).",
+      "type": "string",
+      "examples": ["secado"]
+    },
+    "variable": {
+      "description": "Variable medida.",
+      "enum": ["temperatura", "humedad_relativa", "humedad_suelo", "humedad_grano", "ph", "co2", "radiacion_solar"]
+    },
+    "valor": {
+      "description": "Valor medido, en la unidad indicada.",
+      "type": "number"
+    },
+    "unidad": {
+      "description": "Unidad de la medición. Debe coincidir con la unidad acordada para la variable.",
+      "enum": ["°C", "%", "pH", "ppm", "W/m²"]
+    },
+    "timestamp": {
+      "description": "Momento de la medición en UTC, formato ISO 8601.",
+      "type": "string",
+      "format": "date-time",
+      "examples": ["2026-11-13T14:30:00Z"]
+    },
+    "bateria": {
+      "description": "Opcional. Nivel de batería del dispositivo, en porcentaje.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    }
+  }
+}
