@@ -1,0 +1,63 @@
+# Levanta todo el sistema:            docker compose up --build
+# Con el simulador de sensores:        docker compose --profile simulador up --build
+# Panel:                               http://localhost:8000
+# Documentación de la API:             http://localhost:8000/docs
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0.20
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    restart: unless-stopped
+
+  db:
+    image: timescale/timescaledb:2.17.2-pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cafe}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cafe}
+      POSTGRES_DB: ${POSTGRES_DB:-cafe_iot}
+    ports:
+      - "5432:5432"
+    volumes:
+      - datos-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cafe} -d ${POSTGRES_DB:-cafe_iot}"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+
+  ingesta:
+    build: .
+    command: python -m cafe_iot.ingesta
+    environment: &entorno
+      MQTT_HOST: mqtt
+      MQTT_PUERTO: "1883"
+      DATABASE_URL: postgresql://${POSTGRES_USER:-cafe}:${POSTGRES_PASSWORD:-cafe}@db:5432/${POSTGRES_DB:-cafe_iot}
+    depends_on:
+      db: {condition: service_healthy}
+      mqtt: {condition: service_started}
+    restart: unless-stopped
+
+  api:
+    build: .
+    command: uvicorn cafe_iot.api:app --host 0.0.0.0 --port 8000
+    environment: *entorno
+    ports:
+      - "8000:8000"
+    depends_on:
+      db: {condition: service_healthy}
+    restart: unless-stopped
+
+  simulador:
+    build: .
+    command: python simulador/simulador.py --historial 120 --invalidos
+    environment: *entorno
+    depends_on:
+      - mqtt
+      - ingesta
+    profiles: ["simulador"]
+
+volumes:
+  datos-db:

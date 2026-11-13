@@ -1,0 +1,77 @@
+# Reglas de alerta.
+#
+# IMPORTANTE: salvo las que indican una fuente, estas reglas son EJEMPLOS para
+# probar el sistema. Los umbrales reales se deben definir con apoyo agronómico.
+# Los porcentajes de la FNC (broca 2 % y 5 %, roya 5 %) miden infestación o
+# incidencia en lotes; no son lecturas de sensores y no se usan aquí.
+#
+# Campos:
+#   id         identificador único (sin espacios)
+#   etapa      código de la etapa (config/etapas.yaml)
+#   variable   variable del contrato de datos
+#   condicion  mayor_que | menor_que | fuera_de_rango
+#   umbral     para mayor_que y menor_que
+#   minimo, maximo   para fuera_de_rango
+#   severidad  informativa | advertencia | critica
+#   mensaje    texto que ve el usuario
+#   fuente     opcional: de dónde sale el umbral
+#   ejemplo    true si el umbral no está validado
+
+reglas:
+  - id: secado-temperatura-alta
+    etapa: secado
+    variable: temperatura
+    condicion: mayor_que
+    umbral: 50
+    severidad: critica
+    mensaje: La temperatura de secado supera 50 °C.
+    fuente: Pabón et al. (2025), Revista Cenicafé 76(1), e76104
+    ejemplo: false
+
+  - id: secado-humedad-grano-baja
+    etapa: secado
+    variable: humedad_grano
+    condicion: menor_que
+    umbral: 10
+    severidad: advertencia
+    mensaje: La humedad del grano está por debajo del 10 % (sobresecado).
+    fuente: Pabón et al. (2025), secado a 10–12 % de humedad
+    ejemplo: false
+
+  - id: fermentacion-temperatura-alta
+    etapa: fermentacion
+    variable: temperatura
+    condicion: mayor_que
+    umbral: 30
+    severidad: advertencia
+    mensaje: Temperatura de fermentación alta (umbral de ejemplo).
+    ejemplo: true
+
+  - id: fermentacion-ph-bajo
+    etapa: fermentacion
+    variable: ph
+    condicion: menor_que
+    umbral: 4
+    severidad: advertencia
+    mensaje: pH de fermentación bajo (umbral de ejemplo).
+    ejemplo: true
+
+  - id: manejo-humedad-suelo
+    etapa: manejo_agronomico
+    variable: humedad_suelo
+    condicion: fuera_de_rango
+    minimo: 30
+    maximo: 70
+    severidad: advertencia
+    mensaje: Humedad del suelo fuera del rango esperado (umbral de ejemplo).
+    ejemplo: true
+
+  - id: almacigo-temperatura
+    etapa: almacigo
+    variable: temperatura
+    condicion: fuera_de_rango
+    minimo: 15
+    maximo: 30
+    severidad: informativa
+    mensaje: Temperatura del almácigo fuera del rango esperado (umbral de ejemplo).
+    ejemplo: true

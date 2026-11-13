@@ -1,0 +1,40 @@
+# Etapas del proceso de elaboración del café.
+#
+# PROPUESTA NO OFICIAL: reconstrucción basada en el proceso estándar del café
+# en Colombia. La lista exacta de las 16 etapas está pendiente de confirmar con
+# el docente orientador. Cambiar solo este archivo cuando se confirme.
+#
+# Cada etapa tiene un código (sin tildes ni espacios) que se usa en los temas
+# MQTT y en la base de datos.
+
+fases:
+  - codigo: cultivo
+    nombre: Cultivo
+    tecnologia: sensores
+    etapas:
+      - {codigo: germinacion, nombre: Germinación}
+      - {codigo: almacigo, nombre: Almácigo}
+      - {codigo: siembra, nombre: Trasplante y siembra}
+      - {codigo: manejo_agronomico, nombre: Manejo agronómico}
+      - {codigo: floracion, nombre: Floración}
+      - {codigo: maduracion, nombre: Desarrollo y maduración del fruto}
+      - {codigo: cosecha, nombre: Cosecha}
+
+  - codigo: beneficio
+    nombre: Beneficio
+    tecnologia: sensores
+    etapas:
+      - {codigo: recibo, nombre: Recibo del café cereza}
+      - {codigo: despulpado, nombre: Despulpado}
+      - {codigo: fermentacion, nombre: Fermentación}
+      - {codigo: lavado, nombre: Lavado}
+      - {codigo: secado, nombre: Secado}
+
+  - codigo: transformacion
+    nombre: Transformación
+    tecnologia: camaras
+    etapas:
+      - {codigo: trilla, nombre: Trilla}
+      - {codigo: clasificacion, nombre: Clasificación y selección}
+      - {codigo: tueste, nombre: Tueste}
+      - {codigo: molienda, nombre: Molienda y empaque}
