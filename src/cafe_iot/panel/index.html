@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Café IoT · Panel</title>
+  <link rel="stylesheet" href="/panel/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <div>
+      <h1>Café IoT · UCEVA</h1>
+      <p class="sub">Laboratorio de café controlado · panel único del proceso</p>
+    </div>
+    <div class="resumen">
+      <div class="dato"><span id="n-alertas">–</span><small>alertas abiertas</small></div>
+      <div class="dato"><span id="n-rechazos">–</span><small>rechazos (1 h)</small></div>
+      <div class="dato hora"><span id="actualizado">–</span><small>última actualización</small></div>
+    </div>
+  </header>
+
+  <main class="contenido">
+    <section class="proceso" aria-label="Etapas del proceso">
+      <div id="fases"></div>
+      <section id="detalle" class="detalle" hidden>
+        <div class="detalle-cab">
+          <h2 id="detalle-titulo"></h2>
+          <button id="cerrar" type="button" aria-label="Cerrar detalle">Cerrar</button>
+        </div>
+        <div id="detalle-cuerpo" class="graficas"></div>
+      </section>
+    </section>
+
+    <aside class="lateral" aria-label="Alertas abiertas">
+      <h2>Alertas abiertas</h2>
+      <ol id="alertas" class="alertas"></ol>
+      <p class="leyenda">
+        <span class="chip normal">Normal</span>
+        <span class="chip alerta">Alerta</span>
+        <span class="chip critica">Crítica</span>
+        <span class="chip desactualizada">Sin datos recientes</span>
+        <span class="chip sin_datos">Sin datos</span>
+      </p>
+    </aside>
+  </main>
+
+  <script src="/panel/panel.js"></script>
+</body>
+</html>
